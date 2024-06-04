@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  mysql:
+    image: 'mysql:latest'
+    environment:
+      - 'MYSQL_DATABASE=whatsappclone'
+      - 'MYSQL_PASSWORD=secret'
+      - 'MYSQL_ROOT_PASSWORD=supersecret'
+      - 'MYSQL_USER=springuser'
+    ports:
+      - '3305:3306'
+  app:
+    image: 'dhorram/ubuntu-java-17'
+    command: tail -f /dev/null  # Keeps container running
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    links:
+      - mysql
+    tty: true
+    stdin_open: true
+    volumes:
+      - type: bind
+        source: .
+        target: /home/app
